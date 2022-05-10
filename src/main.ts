@@ -13,6 +13,6 @@ async function bootstrap() {
 
   InitOpenApi(app);
 
-  await app.listen(3001);
+  await app.listen(parseInt(process.env.PORT) || 3001);
 }
 bootstrap();
