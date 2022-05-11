@@ -1,26 +1,33 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Cart, CartDocument } from 'src/schemas/cart.schema';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
 
 @Injectable()
 export class CartService {
-  create(createCartDto: CreateCartDto) {
-    return 'This action adds a new cart';
+
+  constructor(@InjectModel(Cart.name) private cartModel: Model<CartDocument>) { }
+
+  async add(createCartDto: CreateCartDto): Promise<Cart> {
+    const addedProduct = await new this.cartModel(createCartDto);
+    return addedProduct.save();
   }
 
-  findAll() {
-    return `This action returns all cart`;
+  async findAll(): Promise<any> {
+    return await this.cartModel.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} cart`;
+  async findOne(id: string): Promise<Cart> {
+    return await this.cartModel.findOne({_id: id}).exec();
   }
 
-  update(id: number, updateCartDto: UpdateCartDto) {
-    return `This action updates a #${id} cart`;
+  async update(id: string, updateCartDto: UpdateCartDto) {
+    return await this.cartModel.findByIdAndUpdate(id, { ...updateCartDto }, { useFindAndModify: false }).exec();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} cart`;
+  async remove(id: string) {
+    return await this.cartModel.deleteOne({_id: id}).exec();
   }
 }
