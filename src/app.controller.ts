@@ -1,12 +1,12 @@
-import { Controller, Get, Render, UseGuards, Request } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Controller, Get, Render } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from './auth/jwt/jwt-auth.guard';
+import { AnyAuthenticated, JwtAuthGuard, Public } from './modules/auth/jwt/jwt-auth.guard';
 
 @ApiTags('Test')
 @Controller()
 export class AppController {
   
+  @Public()
   @Get()
   @Render('index')
   test() {
@@ -14,10 +14,10 @@ export class AppController {
   }
 
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @AnyAuthenticated()
   @Get('/protected')
-  testGuard(@Request() req) {
-    return { mesage: 'It works!', request: req };
+  testGuard() {
+    return { mesage: 'It works!' };
   }
 
 }

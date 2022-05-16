@@ -10,5 +10,5 @@ export class CreateCartDto {
     
     @ApiProperty()
     @IsNumber()
-    count: string;
+    count: number;
 }

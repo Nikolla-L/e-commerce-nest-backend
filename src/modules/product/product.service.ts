@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Product, ProductDocument } from '../schemas/product.schema';
+import { Product, ProductDocument } from 'src/schemas/product.schema';
+import { PaginationParams } from 'src/utils/PaginationParams';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 
@@ -15,8 +16,8 @@ export class ProductService {
     return createdProduct.save();
   }
 
-  async findAll(): Promise<any> {
-    return await this.productModel.find().exec();
+  async findAll(pagination: PaginationParams): Promise<any> {
+    return await this.productModel.find().skip(pagination.page).limit(pagination.size).exec();
   }
 
   async findOne(id: string): Promise<Product> {

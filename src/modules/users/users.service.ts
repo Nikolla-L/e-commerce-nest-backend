@@ -5,6 +5,7 @@ import { User, UserDocument } from 'src/schemas/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
+import { PaginationParams } from 'src/utils/PaginationParams';
 
 @Injectable()
 export class UsersService {
@@ -18,8 +19,8 @@ export class UsersService {
     return user.save();
   }
 
-  async findAll(): Promise<any> {
-    return await this.userModel.find().exec();
+  async findAll(pagination: PaginationParams): Promise<any> {
+    return await this.userModel.find().skip(pagination.page).limit(pagination.size).exec();
   }
 
   async findOne(id: string): Promise<User> {
