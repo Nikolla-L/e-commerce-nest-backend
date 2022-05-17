@@ -1,6 +1,6 @@
 import { Controller, Get, Render } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { AnyAuthenticated, JwtAuthGuard, Public } from './modules/auth/jwt/jwt-auth.guard';
+import { AnyAuthenticated, Public } from './modules/auth/jwt/jwt-auth.guard';
 
 @ApiTags('Test')
 @Controller()
