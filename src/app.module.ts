@@ -7,6 +7,7 @@ import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ClientMessageModule } from './modules/client-message/client-message.module';
 import { AboutUsModule } from './modules/about-us/about-us.module';
+import { ContactModule } from './modules/contact/contact.module';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { AboutUsModule } from './modules/about-us/about-us.module';
     UsersModule,
     AuthModule,
     ClientMessageModule,
-    AboutUsModule
+    AboutUsModule,
+    ContactModule
   ],
   controllers: [AppController]
 })
