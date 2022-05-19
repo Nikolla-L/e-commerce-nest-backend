@@ -31,4 +31,5 @@ export class ProductService {
   async remove(id: string) {
     return await this.productModel.deleteOne({ _id: id }).exec();
   }
+  
 }

@@ -1,34 +1,32 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { SubscribersService } from './subscribers.service';
 import { CreateSubscriberDto } from './dto/create-subscriber.dto';
-import { UpdateSubscriberDto } from './dto/update-subscriber.dto';
+import { AnyAuthenticated, Public } from '../auth/jwt/jwt-auth.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { PaginationParams } from 'src/utils/PaginationParams';
 
+@ApiTags('Subscribers')
 @Controller('subscribers')
 export class SubscribersController {
   constructor(private readonly subscribersService: SubscribersService) {}
 
+  @Public()
   @Post()
   create(@Body() createSubscriberDto: CreateSubscriberDto) {
     return this.subscribersService.create(createSubscriberDto);
   }
 
+  @ApiBearerAuth()
+  @AnyAuthenticated()
   @Get()
-  findAll() {
-    return this.subscribersService.findAll();
+  findAll(@Query() pagination: PaginationParams) {
+    return this.subscribersService.findAll(pagination);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.subscribersService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSubscriberDto: UpdateSubscriberDto) {
-    return this.subscribersService.update(+id, updateSubscriberDto);
-  }
-
+  @ApiBearerAuth()
+  @AnyAuthenticated()
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.subscribersService.remove(+id);
+    return this.subscribersService.remove(id);
   }
 }

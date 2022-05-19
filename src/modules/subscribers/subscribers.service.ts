@@ -1,26 +1,30 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { SubscriberDocument, Subscriber } from 'src/schemas/subscriber.schema';
+import { CustomValidation } from 'src/utils/CustomValidator';
+import { PaginationParams } from 'src/utils/PaginationParams';
 import { CreateSubscriberDto } from './dto/create-subscriber.dto';
-import { UpdateSubscriberDto } from './dto/update-subscriber.dto';
-
 @Injectable()
 export class SubscribersService {
-  create(createSubscriberDto: CreateSubscriberDto) {
-    return 'This action adds a new subscriber';
+
+  constructor(
+    @InjectModel(Subscriber.name) private subscriberModel: Model<SubscriberDocument>,
+    private validator: CustomValidation
+  ) { }
+
+  async create(createSubscriberDto: CreateSubscriberDto): Promise<Subscriber> {
+    const newSubscriber = await new this.subscriberModel(createSubscriberDto);
+    return await newSubscriber.save();
   }
 
-  findAll() {
-    return `This action returns all subscribers`;
+  async findAll(pagination: PaginationParams): Promise<any> {
+    return await this.subscriberModel.find().skip(pagination.page).limit(pagination.size).exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} subscriber`;
+  async remove(id: string) {
+    await this.validator.validateId(id, this.subscriberModel);
+    return await this.subscriberModel.deleteOne({_id: id}).exec();
   }
 
-  update(id: number, updateSubscriberDto: UpdateSubscriberDto) {
-    return `This action updates a #${id} subscriber`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} subscriber`;
-  }
 }

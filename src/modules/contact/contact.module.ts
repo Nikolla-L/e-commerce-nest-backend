@@ -3,10 +3,11 @@ import { ContactService } from './contact.service';
 import { ContactController } from './contact.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ContactSchema } from 'src/schemas/contact.schema';
+import { CustomValidation } from 'src/utils/CustomValidator';
 
 @Module({
   imports: [MongooseModule.forFeature([{ name: 'Contact', schema: ContactSchema }])],
   controllers: [ContactController],
-  providers: [ContactService]
+  providers: [ContactService, CustomValidation]
 })
 export class ContactModule {}

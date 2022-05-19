@@ -45,7 +45,6 @@ export class CartService {
     if(!item) {
       throw new NotFoundException(`Cart item not found with id ${id}`);
     }
-    console.log(item, '----item')
     return await this.cartModel.deleteOne({_id: id}).exec();
   }
 }
