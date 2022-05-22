@@ -6,11 +6,15 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 import { PaginationParams } from 'src/utils/PaginationParams';
+import { CustomService } from 'src/utils/CustomService';
 
 @Injectable()
 export class UsersService {
 
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) { }
+  constructor(
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    private service: CustomService
+  ) { }
   
   async register(createUserDto: CreateUserDto): Promise<User> {
     const user = new this.userModel();
@@ -20,7 +24,7 @@ export class UsersService {
   }
 
   async findAll(pagination: PaginationParams): Promise<any> {
-    return await this.userModel.find().skip(pagination.page).limit(pagination.size).exec();
+    return await this.service.getPaginatedAll(this.userModel, pagination);
   }
 
   async findOne(id: string): Promise<User> {

@@ -6,13 +6,15 @@ import { Cart, CartDocument } from 'src/schemas/cart.schema';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
 import { PaginationParams } from 'src/utils/PaginationParams';
+import { CustomService } from 'src/utils/CustomService';
 
 @Injectable()
 export class CartService {
 
   constructor(
     @InjectModel(Cart.name) private cartModel: Model<CartDocument>,
-    private productService: ProductService
+    private productService: ProductService,
+    private service: CustomService
   ) { }
 
   async add(createCartDto: CreateCartDto): Promise<Cart> {
@@ -25,7 +27,7 @@ export class CartService {
   }
 
   async findAll(pagination: PaginationParams): Promise<any> {
-    return await this.cartModel.find().skip(pagination.page).limit(pagination.size).exec();
+    return await this.service.getPaginatedAll(this.cartModel, pagination);
   }
 
   async findOne(id: string): Promise<Cart> {

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Product, ProductDocument } from 'src/schemas/product.schema';
+import { CustomService } from 'src/utils/CustomService';
 import { PaginationParams } from 'src/utils/PaginationParams';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -9,7 +10,10 @@ import { UpdateProductDto } from './dto/update-product.dto';
 @Injectable()
 export class ProductService {
 
-  constructor(@InjectModel(Product.name) private productModel: Model<ProductDocument>) { }
+  constructor(
+    @InjectModel(Product.name) private productModel: Model<ProductDocument>,
+    private service: CustomService
+  ) { }
 
   async create(createProductDto: CreateProductDto): Promise<Product> {
     const createdProduct = await new this.productModel(createProductDto);
@@ -17,7 +21,7 @@ export class ProductService {
   }
 
   async findAll(pagination: PaginationParams): Promise<any> {
-    return await this.productModel.find().skip(pagination.page).limit(pagination.size).exec();
+    return await this.service.getPaginatedAll(this.productModel, pagination);
   }
 
   async findOne(id: string): Promise<Product> {
