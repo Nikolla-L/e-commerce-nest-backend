@@ -9,10 +9,22 @@ export class Product {
     name: string;
 
     @Prop()
+    categoryId: string;
+
+    @Prop()
     description: string;
 
     @Prop({ type: Number, required: true })
     price: number;
+
+    // @Prop()
+    // color: string;
+
+    // @Prop()
+    // size: string;
+
+    @Prop({default: 1})
+    quantity: number;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

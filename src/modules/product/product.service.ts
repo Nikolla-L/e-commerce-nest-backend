@@ -20,8 +20,9 @@ export class ProductService {
     return createdProduct.save();
   }
 
-  async findAll(pagination: PaginationParams): Promise<any> {
-    return await this.service.getPaginatedAll(this.productModel, pagination);
+  async findAll(pagination: PaginationParams, categoryId: string): Promise<any> {
+    // return await this.service.getPaginatedAll(this.productModel, pagination);
+    return await this.productModel.find({categoryId: categoryId}).exec();
   }
 
   async findOne(id: string): Promise<Product> {

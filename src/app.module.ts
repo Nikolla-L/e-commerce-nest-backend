@@ -9,6 +9,7 @@ import { ClientMessageModule } from './modules/client-message/client-message.mod
 import { AboutUsModule } from './modules/about-us/about-us.module';
 import { ContactModule } from './modules/contact/contact.module';
 import { SubscribersModule } from './modules/subscribers/subscribers.module';
+import { CategoryModule } from './modules/category/category.module';
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { SubscribersModule } from './modules/subscribers/subscribers.module';
     ClientMessageModule,
     AboutUsModule,
     ContactModule,
-    SubscribersModule
+    SubscribersModule,
+    CategoryModule
   ],
   controllers: [AppController]
 })

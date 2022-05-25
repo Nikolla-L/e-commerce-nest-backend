@@ -9,10 +9,19 @@ export class CreateProductDto {
 
     @ApiProperty()
     @IsNotEmpty()
+    @IsString()
+    categoryId: string;
+
+    @ApiProperty()
+    @IsNotEmpty()
     description: string;
 
     @ApiProperty()
     @IsNotEmpty()
     @IsNumber()
     price: number;
+
+    @ApiProperty({default: 1})
+    @IsNumber()
+    quantity: number;
 }

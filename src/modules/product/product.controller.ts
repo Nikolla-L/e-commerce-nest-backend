@@ -20,8 +20,11 @@ export class ProductController {
 
   @Public()
   @Get()
-  findAll(@Query() pagination: PaginationParams) {
-    return this.productService.findAll(pagination);
+  findAll(
+    @Query() pagination: PaginationParams,
+    @Query() categoryId: string
+  ) {
+    return this.productService.findAll(pagination, categoryId);
   }
 
   @Public()
