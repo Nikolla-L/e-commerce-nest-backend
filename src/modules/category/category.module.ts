@@ -10,6 +10,7 @@ import { CustomService } from 'src/utils/CustomService';
     MongooseModule.forFeature([{ name: 'Category', schema: CategorySchema }])
   ],
   controllers: [CategoryController],
-  providers: [CategoryService, CustomService]
+  providers: [CategoryService, CustomService],
+  exports: [CategoryService]
 })
 export class CategoryModule {}

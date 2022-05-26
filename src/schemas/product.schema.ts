@@ -1,4 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsOptional } from 'class-validator';
 import { Document } from 'mongoose';
 
 export type ProductDocument = Product & Document;
@@ -9,7 +11,7 @@ export class Product {
     name: string;
 
     @Prop()
-    categoryId: string;
+    categoryId: number;
 
     @Prop()
     description: string;

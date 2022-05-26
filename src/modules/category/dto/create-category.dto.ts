@@ -5,7 +5,7 @@ export class CreateCategoryDto {
     @ApiProperty()
     @IsString()
     @IsNotEmpty()
-    categoryId: string;
+    categoryId: number;
 
     @ApiProperty()
     @IsString()

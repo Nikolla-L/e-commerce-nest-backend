@@ -4,11 +4,11 @@ import { CustomValidation } from "./CustomValidator";
 
 export class CustomService extends CustomValidation {
 
-    public async getPaginatedAll(model: Model<any>, pagination: PaginationParams) {
-        const result = await model.find().skip(pagination.page).limit(pagination.size).exec();
-        const count = await model.count();
-        const total = await Math.ceil(count / pagination.size);
-        return {result, total, count};
+    public async getPaginatedAll(model: Model<any>, pagination: PaginationParams, query?: any) {
+        const result = await model.find(query).skip(pagination.page).limit(pagination.size).exec();
+        const count = await model.find(query).count();
+        const totalPages = await Math.ceil(count / pagination.size);
+        return {result, totalPages, count};
     }
 
     public async findAndUpdate(id: string, model: Model<any>, dto: any) {

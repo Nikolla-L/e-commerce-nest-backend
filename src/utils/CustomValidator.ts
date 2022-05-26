@@ -18,7 +18,6 @@ export class CustomValidation {
         if(!item) {
             throw new NotFoundException(`Not found with id ${id}`);
         }
-
     }
 
 }

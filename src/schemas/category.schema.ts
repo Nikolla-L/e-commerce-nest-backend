@@ -6,7 +6,7 @@ export type CategoryDocument = Category & Document;
 @Schema({ timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } })
 export class Category {
     @Prop({unique: true})
-    categoryId: string;
+    categoryId: number;
 
     @Prop({unique: true})
     name: string;

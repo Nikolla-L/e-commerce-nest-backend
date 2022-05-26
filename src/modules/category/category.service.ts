@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Category, CategoryDocument } from 'src/schemas/category.schema';
@@ -29,5 +29,14 @@ export class CategoryService {
 
   async remove(id: string) {
     return await this.service.findAndDelete(id, this.categoryModel);
+  }
+
+  async validateCategoryId(categoryId: number) {
+    let categories = await this.findAll();
+    let categoryIndex = categories.findIndex(category => category.categoryId === categoryId);
+
+    if(categoryIndex == -1) {
+      throw new BadRequestException(`Category with Id - ${categoryId} does not exist`);
+    }
   }
 }

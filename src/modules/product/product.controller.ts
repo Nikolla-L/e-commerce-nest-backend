@@ -5,14 +5,17 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { PaginationParams } from 'src/utils/PaginationParams';
 import { AnyAuthenticated, Public } from '../auth/jwt/jwt-auth.guard';
+import { ProductSearchDto } from './dto/search-product.dto';
 
 @ApiTags('Products')
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
-  @ApiBearerAuth()
-  @AnyAuthenticated()
+  // @ApiBearerAuth()
+  // @AnyAuthenticated()
+  
+  @Public()
   @Post()
   create(@Body() createProductDto: CreateProductDto) {
     return this.productService.create(createProductDto);
@@ -20,11 +23,8 @@ export class ProductController {
 
   @Public()
   @Get()
-  findAll(
-    @Query() pagination: PaginationParams,
-    @Query() categoryId: string
-  ) {
-    return this.productService.findAll(pagination, categoryId);
+  findAll(@Query() params: ProductSearchDto) {
+    return this.productService.findAll(params);
   }
 
   @Public()
