@@ -8,6 +8,9 @@ export class Cart {
     @Prop({required: true})
     productId: string;
 
+    @Prop({required: true})
+    userId: string;
+
     @Prop({default: 1})
     count: number;
 }

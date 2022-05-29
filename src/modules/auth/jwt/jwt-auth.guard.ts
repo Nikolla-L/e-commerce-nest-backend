@@ -7,6 +7,7 @@ const ANY_AUTHENTICATED_KEY = 'anyAuthenticated';
 
 export const Public = () => SetMetadata(API_PUBLIC_KEY, true);
 export const AnyAuthenticated = () => SetMetadata(ANY_AUTHENTICATED_KEY, true);
+
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
     constructor(private reflector: Reflector) {

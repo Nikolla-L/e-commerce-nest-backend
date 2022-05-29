@@ -6,7 +6,6 @@ export class CreateCartDto {
     @IsNotEmpty()
     @IsString()
     productId: string;
-
     
     @ApiProperty()
     @IsNumber()

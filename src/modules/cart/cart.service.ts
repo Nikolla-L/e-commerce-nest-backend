@@ -7,6 +7,8 @@ import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
 import { PaginationParams } from 'src/utils/PaginationParams';
 import { CustomService } from 'src/utils/CustomService';
+import { AuthService } from '../auth/auth.service';
+import { IncomingHttpHeaders } from 'http';
 
 @Injectable()
 export class CartService {
@@ -14,15 +16,20 @@ export class CartService {
   constructor(
     @InjectModel(Cart.name) private cartModel: Model<CartDocument>,
     private productService: ProductService,
-    private service: CustomService
+    private service: CustomService,
+    private authService: AuthService
   ) { }
 
-  async add(createCartDto: CreateCartDto): Promise<Cart> {
+  async add(headers: IncomingHttpHeaders, createCartDto: CreateCartDto): Promise<Cart> {
+    const userData = await this.authService.getUsersCredentials(headers);
     const product = await this.productService.findOne(createCartDto.productId);
+
+    // TOFO -- INVALID VALIDATION
     if(!product) {
       throw new NotFoundException(`Product not found with id ${createCartDto.productId}`);
     }
-    const addedProduct = await new this.cartModel(createCartDto);
+
+    const addedProduct = await new this.cartModel({userId: userData.sub, ...createCartDto});
     return addedProduct.save();
   }
 
