@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Headers } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { PaginationParams } from 'src/utils/PaginationParams';
-import { AnyAuthenticated, Public } from '../auth/jwt/jwt-auth.guard';
+import { AnyAuthenticated } from '../auth/jwt/jwt-auth.guard';
 import { CartService } from './cart.service';
+import { CartProductSearchDto } from './dto/cart-product-search.dto';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
 
@@ -11,9 +11,6 @@ import { UpdateCartDto } from './dto/update-cart.dto';
 export class CartController {
   constructor(private readonly cartService: CartService) {}
 
-  // ფილტრი სახელით
-  // დამმატებელი იუზერი
-  // TODO
   @ApiBearerAuth()
   @AnyAuthenticated()
   @ApiOperation({ summary: 'პროდუქტის ქარტში დამატება' })
@@ -26,8 +23,8 @@ export class CartController {
   @AnyAuthenticated()
   @ApiOperation({ summary: 'ქარტის პროდუქტების სიის მიღება' })
   @Get()
-  findAll(@Query() pagination: PaginationParams) {
-    return this.cartService.findAll(pagination);
+  findAll(@Headers() headers, @Query() params: CartProductSearchDto) {
+    return this.cartService.findAll(headers, params);
   }
 
   @ApiBearerAuth()
@@ -42,15 +39,19 @@ export class CartController {
   @AnyAuthenticated()
   @ApiOperation({ summary: 'ქარტის პროდუქტის რედაქტირება' })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCartDto: UpdateCartDto) {
-    return this.cartService.update(id, updateCartDto);
+  update(
+    @Headers() headers,
+    @Param('id') id: string,
+    @Body() updateCartDto: UpdateCartDto
+  ) {
+    return this.cartService.update(headers, id, updateCartDto);
   }
 
   @ApiBearerAuth()
   @AnyAuthenticated()
   @ApiOperation({ summary: 'პროდუქტის წაშლა ქარტიდან' })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.cartService.remove(id);
+  remove(@Headers() headers, @Param('id') id: string) {
+    return this.cartService.remove(headers, id);
   }
 }

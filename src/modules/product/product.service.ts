@@ -1,8 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Product, ProductDocument } from 'src/schemas/product.schema';
-import { CustomService } from 'src/utils/CustomService';
 import { CategoryService } from '../category/category.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { ProductSearchDto } from './dto/search-product.dto';
@@ -13,7 +12,6 @@ export class ProductService {
 
   constructor(
     @InjectModel(Product.name) private productModel: Model<ProductDocument>,
-    private service: CustomService,
     private categoryService: CategoryService
   ) { }
 
@@ -25,7 +23,15 @@ export class ProductService {
   }
 
   async findAll(params: ProductSearchDto): Promise<any> {
-    return await this.service.getPaginatedAll(this.productModel, params, params);
+    let query = {...params, price: { $gt: params?.minPrice-1 || -1, $lt: params?.maxPrice+1 || 1000000000000}};
+    if(Number(params?.minPrice) > Number(params?.maxPrice)) {
+      throw new BadRequestException('Price range is incorrect');
+    }
+    
+    const result = await this.productModel.find(query).skip(params.page).limit(params.size).exec();
+    const count = await this.productModel.find(query).count();
+    const totalPages = await Math.ceil(count / params.size);
+    return {result, totalPages, count};
   }
 
   async findOne(id: string): Promise<Product> {

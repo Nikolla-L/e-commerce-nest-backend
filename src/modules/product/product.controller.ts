@@ -11,7 +11,8 @@ import { ProductSearchDto } from './dto/search-product.dto';
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
   
-  @Public()
+  @ApiBearerAuth()
+  @AnyAuthenticated()
   @ApiOperation({ summary: 'პროდუქტის შექმნა' })
   @Post()
   create(@Body() createProductDto: CreateProductDto) {
