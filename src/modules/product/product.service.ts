@@ -2,6 +2,9 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Product, ProductDocument } from 'src/schemas/product.schema';
+import { CustomService } from 'src/utils/CustomService';
+import { CustomValidation } from 'src/utils/CustomValidator';
+import { PaginationParams } from 'src/utils/PaginationParams';
 import { CategoryService } from '../category/category.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { ProductSearchDto } from './dto/search-product.dto';
@@ -12,7 +15,9 @@ export class ProductService {
 
   constructor(
     @InjectModel(Product.name) private productModel: Model<ProductDocument>,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private validation: CustomValidation,
+    private customService: CustomService
   ) { }
 
   async create(createProductDto: CreateProductDto): Promise<Product> {
@@ -34,16 +39,33 @@ export class ProductService {
     return {result, totalPages, count};
   }
 
+  async getMostView(pagination: PaginationParams) {
+    const result = await this.productModel.find()
+                                        .sort({views: -1})
+                                        .skip(pagination.page)
+                                        .limit(pagination.size) 
+                                        .exec();
+    const count = await this.productModel.find().count();
+    const totalPages = await Math.ceil(count / pagination.size);
+    return {result, totalPages, count};
+  }
+
   async findOne(id: string): Promise<Product> {
-    return await this.productModel.findOne({_id: id}).exec();
+    await this.validation.validateIdType(id);
+    const product = await this.productModel.findOne({_id: id}).exec();
+    if(product) {
+      let currentViews = product.views || 0;
+      await this.productModel.findByIdAndUpdate(id, {views: currentViews + 1}, { useFindAndModify: false }).exec();
+      return product;
+    }
   }
 
   async update(id: string, updateProductDto: UpdateProductDto) {
-    return await this.productModel.findByIdAndUpdate(id, { ...updateProductDto }, { useFindAndModify: false }).exec();
+    await this.customService.findAndUpdate(id, this.productModel, updateProductDto);
   }
 
   async remove(id: string) {
-    return await this.productModel.deleteOne({ _id: id }).exec();
+    await this.customService.findAndDelete(id, this.productModel);
   }
   
 }

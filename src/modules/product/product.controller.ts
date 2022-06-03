@@ -5,6 +5,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { AnyAuthenticated, Public } from '../auth/jwt/jwt-auth.guard';
 import { ProductSearchDto } from './dto/search-product.dto';
+import { PaginationParams } from 'src/utils/PaginationParams';
 
 @ApiTags('Products')
 @Controller('product')
@@ -19,12 +20,18 @@ export class ProductController {
     return this.productService.create(createProductDto);
   }
 
-  // TODO - ფასების ფილტრის დამატება
   @Public()
   @ApiOperation({ summary: 'პროდუქტების სიის მიღება, გაფილტვრა' })
   @Get()
   findAll(@Query() params: ProductSearchDto) {
     return this.productService.findAll(params);
+  }
+
+  @Public()
+  @ApiOperation({ summary: 'ყველაზე ხშირად ნახვადი პროდუქტების მიღება' })
+  @Get('/most-views')
+  getMostView(@Query() pagination: PaginationParams) {
+    return this.productService.getMostView(pagination);
   }
 
   @Public()

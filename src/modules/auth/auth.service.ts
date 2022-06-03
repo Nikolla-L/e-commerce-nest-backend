@@ -44,8 +44,25 @@ export class AuthService {
         throw new UnauthorizedException('Invalid credentials');
     }
 
+    async logout(request: Request): Promise<any> {
+        console.log(request, '---------reuqest')
+        // const userData = await this.getUsersCredentials(headers);
+        // if(userData) {
+        //     return {
+        //         refresh_token: this.jwtTokenService.sign(userData, {expiresIn: 0}),
+        //         message: 'successfully logged out'
+        //     };
+        // } else {
+        //     return {message: 'already logged out'};
+        // }
+    }
+
     public getUsersCredentials(headers: IncomingHttpHeaders) {
-        let token = headers.authorization.split(' ')[1];
-        return this.jwtTokenService.verify(token, {secret: jwtConstants.secret});
+        if(headers.authorization) {
+            let token = headers.authorization.split(' ')[1];
+            return this.jwtTokenService.verify(token, {secret: jwtConstants.secret});
+        } else {
+            throw new UnauthorizedException();
+        }
     }
 }

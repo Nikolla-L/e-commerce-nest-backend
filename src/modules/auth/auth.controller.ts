@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Delete, Req } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { UserDto } from './dto/user.dto';
@@ -14,6 +14,14 @@ export class AuthController {
   @ApiOperation({ summary: 'ავტორიზაცია' })
   @Post('login')
   login(@Body() userDto: UserDto) {
-    return this.authService.loginWithCredentials(userDto)
+    return this.authService.loginWithCredentials(userDto);
   }
+
+  @Public()
+  @ApiOperation({ summary: 'სისტემიდან გასვლა' })
+  @Delete('logout')
+  logout(@Req() request) {
+    return this.authService.logout(request);
+  }
+
 }

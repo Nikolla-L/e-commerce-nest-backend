@@ -6,6 +6,7 @@ import { ProductSchema } from 'src/schemas/product.schema';
 import { CustomService } from 'src/utils/CustomService';
 import { CategoryService } from '../category/category.service';
 import { CategorySchema } from 'src/schemas/category.schema';
+import { CustomValidation } from 'src/utils/CustomValidator';
 
 @Module({
   imports: [MongooseModule.forFeature([
@@ -16,6 +17,7 @@ import { CategorySchema } from 'src/schemas/category.schema';
   providers: [
     ProductService,
     CustomService,
+    CustomValidation,
     CategoryService
   ],
   exports: [ProductService]

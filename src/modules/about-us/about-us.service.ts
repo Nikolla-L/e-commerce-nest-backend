@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AboutUs, AboutUsDocument } from 'src/schemas/about-us.schema';
+import { CustomService } from 'src/utils/CustomService';
 import { CustomValidation } from 'src/utils/CustomValidator';
 import { CreateAboutUsDto } from './dto/create-about-us.dto';
 import { UpdateAboutUsDto } from './dto/update-about-us.dto';
@@ -11,7 +12,8 @@ export class AboutUsService {
 
   constructor(
     @InjectModel(AboutUs.name) private aboutUsModel: Model<AboutUsDocument>,
-    private validator: CustomValidation
+    private validator: CustomValidation,
+    private service: CustomService
   ) { }
   
   async create(createAboutUsDto: CreateAboutUsDto): Promise<AboutUs> {
@@ -25,12 +27,10 @@ export class AboutUsService {
   }
 
   async update(id: string, updateAboutUsDto: UpdateAboutUsDto) {
-    await this.validator.validateId(id, this.aboutUsModel);
-    return await this.aboutUsModel.findByIdAndUpdate(id, {...updateAboutUsDto}, {useFindAndModify: false}).exec();
+    await this.service.findAndUpdate(id, this.aboutUsModel, updateAboutUsDto);
   }
 
   async remove(id: string) {
-    await this.validator.validateId(id, this.aboutUsModel);
-    return await this.aboutUsModel.deleteOne({_id: id}).exec();
+    await this.service.findAndDelete(id, this.aboutUsModel);
   }
 }

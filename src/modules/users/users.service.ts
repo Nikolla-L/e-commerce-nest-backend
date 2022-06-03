@@ -44,6 +44,6 @@ export class UsersService {
   }
 
   async delete(id: string) {
-    return await this.userModel.deleteOne({_id: id}).exec();
+    await this.service.findAndDelete(id, this.userModel);
   }
 }

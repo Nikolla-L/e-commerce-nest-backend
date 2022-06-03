@@ -3,7 +3,7 @@ import { Model } from "mongoose";
 
 export class CustomValidation {
 
-    // validation to check if is valid mongoDB type id
+    // validation to check if is valid mongoDB object id
     public async validateIdType(id: string) {
         if(!id.match(/^[0-9a-fA-F]{24}$/)) {
             throw new BadRequestException('Invalid id');

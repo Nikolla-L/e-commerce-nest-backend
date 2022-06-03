@@ -24,7 +24,7 @@ export class ClientMessageService {
   }
 
   async remove(id: string) {
-    return await this.clientMessageModel.deleteOne({ _id: id }).exec();
+    await this.service.findAndDelete(id, this.clientMessageModel);
   }
 
 }

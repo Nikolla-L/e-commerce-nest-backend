@@ -19,6 +19,9 @@ export class Product {
     @Prop({ type: Number, required: true })
     price: number;
 
+    @Prop({ type: Number, default: 0 })
+    views: number;
+
     // @Prop()
     // color: string;
 
