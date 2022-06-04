@@ -34,7 +34,25 @@ export class CartService {
     const userData = await this.authService.getUsersCredentials(headers);
     if(userData) {
       const userId = userData.sub;
-      return await this.service.getPaginatedAll(this.cartModel, params, {userId: userId, ...params});
+      let cartProducts = await this.service.getPaginatedAll(this.cartModel, params, {userId: userId, ...params});
+        // let newResult = [];
+      if(cartProducts) {
+        // let updatedResult = cartProducts.result;
+        await cartProducts.result.forEach(async (p, i) => {
+          console.log(await this.findOneProduct(p._doc.productId), '------------dddd')
+          await Object.assign(p._doc, {product: await this.findOneProduct(p._doc.productId)})
+        })
+        // newResult = await Array.from(cartProducts.result).map(async cartProduct => {
+        //   console.log(await this.findOneProduct(cartProduct._doc.productId), '------------dddd')
+        //   // return {
+        //   //   ...cartProduct._doc,
+        //   //   product:  await this.findOneProduct(cartProduct._doc.productId)
+        //   // }
+        //   return {...cartProduct._doc, product: await this.findOneProduct(cartProduct._doc.productId)}
+        // })
+        // await console.log(newResult, '---------------d');
+        return await cartProducts;
+      }
     }
   }
 
@@ -73,6 +91,10 @@ export class CartService {
         throw new BadRequestException('Bad request');
       }
     }
+  }
+
+  findOneProduct(id: string) {
+    return this.productModel.findOne({_id: id}).exec();
   }
 
 }
