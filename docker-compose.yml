@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  dev:
+      container_name: e-commerce-nest-dev
+      image: nestjs-api-dev:1.0.0
+      build:
+        context: .
+        target: development
+        dockerfile: ./Dockerfile
+      command: npm run start:debug
+      ports:
+        - 3001:3001
+      networks:
+        - nesjs-network
+      volumes:
+        - .:/usr/src/app
+        - /usr/src/app/node_modules
+      restart: unless-stopped
+  prod:
+    container_name: e-commerce-nest-prod
+    image: nestjs-api-prod:1.0.0
+    build:
+      context: .
+      target: production
+      dockerfile: ./Dockerfile
+    command: npm run start:prod
+    ports:
+      - 3001:3001
+    networks:
+      - nesjs-network
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+
+networks:
+    nesjs-network:
