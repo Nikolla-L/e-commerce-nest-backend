@@ -10,19 +10,21 @@ import { AboutUsModule } from './modules/about-us/about-us.module';
 import { ContactModule } from './modules/contact/contact.module';
 import { SubscribersModule } from './modules/subscribers/subscribers.module';
 import { CategoryModule } from './modules/category/category.module';
+import { SoldProductModule } from './modules/sold-product/sold-product.module';
 
 @Module({
   imports: [
     DBModule,
+    AuthModule,
+    UsersModule,
     ProductModule,
     CartModule,
-    UsersModule,
-    AuthModule,
     ClientMessageModule,
     AboutUsModule,
     ContactModule,
     SubscribersModule,
-    CategoryModule
+    CategoryModule,
+    SoldProductModule,
   ],
   controllers: [AppController]
 })

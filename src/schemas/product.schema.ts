@@ -1,6 +1,4 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional } from 'class-validator';
 import { Document } from 'mongoose';
 
 export type ProductDocument = Product & Document;
@@ -30,6 +28,9 @@ export class Product {
 
     @Prop({default: 1})
     quantity: number;
+
+    // @Prop({default: this.quantity})
+    // avalible: number;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
