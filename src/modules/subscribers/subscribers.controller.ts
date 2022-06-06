@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Query } from '@nestjs/common';
 import { SubscribersService } from './subscribers.service';
 import { CreateSubscriberDto } from './dto/create-subscriber.dto';
-import { AnyAuthenticated, Public } from '../auth/jwt/jwt-auth.guard';
+import { AnyAuthenticated, IsAdmin, Public } from '../auth/jwt/jwt-auth.guard';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PaginationParams } from 'src/utils/PaginationParams';
 
@@ -26,7 +26,7 @@ export class SubscribersController {
   }
 
   @ApiBearerAuth()
-  @AnyAuthenticated()
+  @IsAdmin()
   @ApiOperation({ summary: 'გამომწერის წაშლა' })
   @Delete(':id')
   remove(@Param('id') id: string) {

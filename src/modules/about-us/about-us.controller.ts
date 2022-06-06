@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { AnyAuthenticated, Public } from '../auth/jwt/jwt-auth.guard';
+import { Public, IsAdmin} from '../auth/jwt/jwt-auth.guard';
 import { AboutUsService } from './about-us.service';
 import { CreateAboutUsDto } from './dto/create-about-us.dto';
 import { UpdateAboutUsDto } from './dto/update-about-us.dto';
@@ -11,7 +11,7 @@ export class AboutUsController {
   constructor(private readonly aboutUsService: AboutUsService) {}
 
   @ApiBearerAuth()
-  @AnyAuthenticated()
+  @IsAdmin()
   @ApiOperation({ summary: 'ინფორმაციის დამატება "ჩვენს შესახებ" სექციაში' })
   @Post()
   create(@Body() createAboutUsDto: CreateAboutUsDto) {
@@ -26,7 +26,7 @@ export class AboutUsController {
   }
 
   @ApiBearerAuth()
-  @AnyAuthenticated()
+  @IsAdmin()
   @ApiOperation({ summary: '"ჩვენს შესახებ" ინფორმაციის რედაქტირება' })
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAboutUsDto: UpdateAboutUsDto) {
@@ -34,7 +34,7 @@ export class AboutUsController {
   }
 
   @ApiBearerAuth()
-  @AnyAuthenticated()
+  @IsAdmin()
   @ApiOperation({ summary: '"ჩვენს შესახებ" ინფორმაციის წაშლა' })
   @Delete(':id')
   remove(@Param('id') id: string) {

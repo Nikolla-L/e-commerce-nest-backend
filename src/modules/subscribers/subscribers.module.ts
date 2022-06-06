@@ -10,4 +10,4 @@ import { CustomService } from 'src/utils/CustomService';
   controllers: [SubscribersController],
   providers: [SubscribersService, CustomService]
 })
-export class SubscribersModule {}
+export class SubscribersModule { }

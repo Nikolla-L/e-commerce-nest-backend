@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { AnyAuthenticated, Public } from '../auth/jwt/jwt-auth.guard';
+import { IsAdmin, Public } from '../auth/jwt/jwt-auth.guard';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -11,7 +11,7 @@ export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   @ApiBearerAuth()
-  @AnyAuthenticated()
+  @IsAdmin()
   @ApiOperation({ summary: 'კატეგორიის შექმნა' })
   @Post()
   create(@Body() createCategoryDto: CreateCategoryDto) {
@@ -26,7 +26,7 @@ export class CategoryController {
   }
 
   @ApiBearerAuth()
-  @AnyAuthenticated()
+  @IsAdmin()
   @ApiOperation({ summary: 'კატეგორიის რედაქტირება' })
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
@@ -34,7 +34,7 @@ export class CategoryController {
   }
 
   @ApiBearerAuth()
-  @AnyAuthenticated()
+  @IsAdmin()
   @ApiOperation({ summary: 'კატეგორიის წაშლა' })
   @Delete(':id')
   remove(@Param('id') id: string) {

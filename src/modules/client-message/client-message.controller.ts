@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Param, Delete, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PaginationParams } from 'src/utils/PaginationParams';
-import { AnyAuthenticated, Public } from '../auth/jwt/jwt-auth.guard';
+import { IsAdmin, Public } from '../auth/jwt/jwt-auth.guard';
 import { ClientMessageService } from './client-message.service';
 import { CreateClientMessageDto } from './dto/create-client-message.dto';
 
@@ -18,7 +18,7 @@ export class ClientMessageController {
   }
 
   @ApiBearerAuth()
-  @AnyAuthenticated()
+  @IsAdmin()
   @ApiOperation({ summary: 'მომხმარებლების გამოგზავნილი შეტყობინებების მიღება' })
   @Get()
   findAll(@Query() pagination: PaginationParams) {
@@ -26,7 +26,7 @@ export class ClientMessageController {
   }
 
   @ApiBearerAuth()
-  @AnyAuthenticated()
+  @IsAdmin()
   @ApiOperation({ summary: 'მომხმარებლის გამოგზავნილი შეტყობინების წაშლა' })
   @Delete(':id')
   remove(@Param('id') id: string) {

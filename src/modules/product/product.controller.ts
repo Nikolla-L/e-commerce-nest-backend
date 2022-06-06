@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { AnyAuthenticated, Public } from '../auth/jwt/jwt-auth.guard';
+import { IsAdmin, Public } from '../auth/jwt/jwt-auth.guard';
 import { ProductSearchDto } from './dto/search-product.dto';
 import { PaginationParams } from 'src/utils/PaginationParams';
 
@@ -13,7 +13,7 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
   
   @ApiBearerAuth()
-  @AnyAuthenticated()
+  @IsAdmin()
   @ApiOperation({ summary: 'პროდუქტის შექმნა' })
   @Post()
   create(@Body() createProductDto: CreateProductDto) {
@@ -42,7 +42,7 @@ export class ProductController {
   }
 
   @ApiBearerAuth()
-  @AnyAuthenticated()
+  @IsAdmin()
   @ApiOperation({ summary: 'პროდუქტის რედაქტირება' })
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
@@ -50,7 +50,7 @@ export class ProductController {
   }
 
   @ApiBearerAuth()
-  @AnyAuthenticated()
+  @IsAdmin()
   @ApiOperation({ summary: 'პროდუქტის წაშლა' })
   @Delete(':id')
   remove(@Param('id') id: string) {
