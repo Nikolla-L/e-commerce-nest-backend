@@ -21,12 +21,12 @@ export class UsersService implements OnModuleInit {
   }
   
   async register(createUserDto: CreateUserDto): Promise<User> {
-    const emailExists = this.findWithEmail(createUserDto.email);
+    const emailExists = await this.findWithEmail(createUserDto.email);
     if(emailExists) {
       throw new BadRequestException('User already exists with this email');
     } 
-    
-    const userName = this.findWithUsername(createUserDto.username);
+
+    const userName = await this.findWithUsername(createUserDto.username);
     if(userName) {
       throw new BadRequestException('User already exists with this username');
     }
