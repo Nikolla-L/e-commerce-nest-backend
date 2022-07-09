@@ -38,6 +38,8 @@ export class AuthService {
                 userId: userData._id
             };
             return {
+                username: userData.username,
+                userId: userData._id,
                 access_token: this.jwtTokenService.sign(payload)
             };
         }
