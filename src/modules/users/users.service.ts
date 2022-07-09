@@ -21,7 +21,7 @@ export class UsersService implements OnModuleInit {
   }
   
   async register(createUserDto: CreateUserDto): Promise<User> {
-    const user = new this.userModel();
+    const user = new this.userModel(createUserDto);
     user.email = createUserDto.email;
     user.password = await bcrypt.hash(createUserDto.password, 10);
     return user.save();
