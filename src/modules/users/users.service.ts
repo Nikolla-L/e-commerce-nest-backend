@@ -1,8 +1,7 @@
-import { BadRequestException, Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from 'src/schemas/user.schema';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 import { PaginationParams } from 'src/utils/PaginationParams';
@@ -13,28 +12,11 @@ export class UsersService implements OnModuleInit {
 
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
-    private service: CustomService
+    private service: CustomService,
   ) { }
 
   async onModuleInit() {
     await this.seedAdmin()
-  }
-  
-  async register(createUserDto: CreateUserDto): Promise<User> {
-    const emailExists = await this.findWithEmail(createUserDto.email);
-    if(emailExists) {
-      throw new BadRequestException('User already exists with this email');
-    } 
-
-    const userName = await this.findWithUsername(createUserDto.username);
-    if(userName) {
-      throw new BadRequestException('User already exists with this username');
-    }
-
-    const user = new this.userModel(createUserDto);
-    user.email = createUserDto.email;
-    user.password = await bcrypt.hash(createUserDto.password, 10);
-    return user.save();
   }
 
   async findAll(pagination: PaginationParams): Promise<any> {

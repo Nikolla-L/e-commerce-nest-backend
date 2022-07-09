@@ -8,6 +8,8 @@ import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt/jwt.strategy';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './jwt/jwt-auth.guard';
+import { MongooseModule } from '@nestjs/mongoose';
+import { UserSchema } from 'src/schemas/user.schema';
 
 @Module({
   imports: [
@@ -16,7 +18,8 @@ import { JwtAuthGuard } from './jwt/jwt-auth.guard';
     JwtModule.register({
       secret: jwtConstants.secret,
       signOptions: {expiresIn: '45m'}
-    })
+    }),
+    MongooseModule.forFeature([{ name: 'User', schema: UserSchema }])
   ],
   controllers: [AuthController],
   providers: [

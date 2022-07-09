@@ -1,6 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get,  Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PaginationParams } from 'src/utils/PaginationParams';
@@ -9,16 +8,10 @@ import { AnyAuthenticated, Public } from '../auth/jwt/jwt-auth.guard';
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
+  
   constructor(private readonly usersService: UsersService) {}
 
   // TODO --- ადმინის პრივილეგიის ან საკუთარი პროფილის ამოცნობის მოფიქრება და პროფილის დეაქტივაცია-ედიტირებაზე მიბმა
-
-  @Public()
-  @ApiOperation({ summary: 'მომხმარებლის შექმნა, რეგისტრაცია' })
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.register(createUserDto);
-  }
 
   @Public()
   @ApiOperation({ summary: 'მომხმარებელთა სიის მიღება' })
