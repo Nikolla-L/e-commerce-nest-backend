@@ -1,4 +1,4 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { BadRequestException, Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from 'src/schemas/user.schema';
@@ -21,6 +21,16 @@ export class UsersService implements OnModuleInit {
   }
   
   async register(createUserDto: CreateUserDto): Promise<User> {
+    const emailExists = this.findWithEmail(createUserDto.email);
+    if(emailExists) {
+      throw new BadRequestException('User already exists with this email');
+    } 
+    
+    const userName = this.findWithUsername(createUserDto.username);
+    if(userName) {
+      throw new BadRequestException('User already exists with this username');
+    }
+
     const user = new this.userModel(createUserDto);
     user.email = createUserDto.email;
     user.password = await bcrypt.hash(createUserDto.password, 10);
@@ -33,6 +43,10 @@ export class UsersService implements OnModuleInit {
 
   async findOne(id: string): Promise<User> {
     return await this.userModel.findOne({_id: id}).exec();
+  }
+
+  async findWithEmail(email: string): Promise<any> {
+    return await this.userModel.findOne({email: email}).exec();
   }
 
   async findWithUsername(username: string): Promise<any> {
