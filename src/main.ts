@@ -14,6 +14,12 @@ async function bootstrap() {
     exclude: [{ path: '', method: RequestMethod.GET }]
   });
 
+  const options = {
+    origin: "*",
+    methods: "GET,PUT,POST,PATCH,DELETE",
+  };
+  app.enableCors(options);
+
   InitOpenApi(app);
 
   await app.listen(parseInt(process.env.PORT) || 3001);
