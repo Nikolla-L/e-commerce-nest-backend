@@ -18,15 +18,19 @@ export class SoldProductService {
     return `This action returns all soldProduct`;
   }
 
-  findOne(id: number) {
+  findUserProducts(id: string) {
+
+  }
+
+  findOne(id: string) {
     return `This action returns a #${id} soldProduct`;
   }
 
-  update(id: number, updateSoldProductDto: UpdateSoldProductDto) {
+  update(id: string, updateSoldProductDto: UpdateSoldProductDto) {
     return `This action updates a #${id} soldProduct`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} soldProduct`;
   }
 }

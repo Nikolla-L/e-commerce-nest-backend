@@ -11,6 +11,7 @@ import { ContactModule } from './modules/contact/contact.module';
 import { SubscribersModule } from './modules/subscribers/subscribers.module';
 import { CategoryModule } from './modules/category/category.module';
 import { SoldProductModule } from './modules/sold-product/sold-product.module';
+import { FileUploadModule } from './modules/file-upload/file-upload.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { SoldProductModule } from './modules/sold-product/sold-product.module';
     SubscribersModule,
     CategoryModule,
     SoldProductModule,
+    FileUploadModule
   ],
   controllers: [AppController]
 })
