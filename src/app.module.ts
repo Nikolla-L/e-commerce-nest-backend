@@ -12,6 +12,8 @@ import { SubscribersModule } from './modules/subscribers/subscribers.module';
 import { CategoryModule } from './modules/category/category.module';
 import { SoldProductModule } from './modules/sold-product/sold-product.module';
 import { FileUploadModule } from './modules/file-upload/file-upload.module';
+import { StaredProductModule } from './modules/stared-product/stared-product.module';
+import { FavoriteProductsModule } from './modules/favorite-products/favorite-products.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { FileUploadModule } from './modules/file-upload/file-upload.module';
     AuthModule,
     UsersModule,
     ProductModule,
+    StaredProductModule,
+    FavoriteProductsModule,
     CartModule,
     ClientMessageModule,
     AboutUsModule,

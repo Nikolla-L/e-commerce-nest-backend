@@ -18,6 +18,9 @@ import { ProductSchema } from 'src/schemas/product.schema';
     AuthModule
   ],
   controllers: [CartController],
-  providers: [CartService, CustomService]
+  providers: [
+    CartService,
+    CustomService
+  ]
 })
 export class CartModule {}
