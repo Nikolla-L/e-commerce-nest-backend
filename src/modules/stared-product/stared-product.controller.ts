@@ -1,8 +1,9 @@
-import { Controller, Get, Put, Body, Param, Delete } from '@nestjs/common';
+import { Controller, Headers, Get, Put, Body, Param, Delete, Query } from '@nestjs/common';
 import { StaredProductService } from './stared-product.service';
 import { CreateStaredProductDto } from './dto/create-stared-product.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { IsAdmin } from '../auth/jwt/jwt-auth.guard';
+import { AnyAuthenticated, IsAdmin } from '../auth/jwt/jwt-auth.guard';
+import { StaredProductSearchDto } from './dto/stared-product-search.dto';
 
 @ApiTags('Products')
 @Controller('stared-product')
@@ -10,25 +11,26 @@ export class StaredProductController {
   constructor(private readonly staredProductService: StaredProductService) {}
 
   @ApiBearerAuth()
+  @AnyAuthenticated()
   @ApiOperation({ summary: 'პროდუქტის ვარსკვლავებით შეფასება' })
   @Put()
-  create(@Body() createStaredProductDto: CreateStaredProductDto) {
-    return this.staredProductService.create(createStaredProductDto);
+  create(@Headers() headers, @Body() createStaredProductDto: CreateStaredProductDto) {
+    return this.staredProductService.create(headers, createStaredProductDto);
   }
 
   @ApiBearerAuth()
   @IsAdmin()
   @ApiOperation({ summary: 'პროდუქტების შეფასებების სიის მიღება' })
   @Get()
-  findAll() {
-    return this.staredProductService.findAll();
+  findAll(@Headers() headers, @Query() params: StaredProductSearchDto) {
+    return this.staredProductService.findAll(headers, params);
   }
 
   @ApiBearerAuth()
   @IsAdmin()
   @ApiOperation({ summary: 'პროდუქტის შეფასების წაშლა' })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.staredProductService.remove(+id);
+  remove(@Headers() headers, @Param('id') id: string) {
+    return this.staredProductService.remove(headers, id);
   }
 }

@@ -6,11 +6,12 @@ import { CustomService } from 'src/utils/CustomService';
 import { MongooseModule } from '@nestjs/mongoose';
 import { StaredProductSchema } from 'src/schemas/stared-product.schema';
 import { ProductSchema } from 'src/schemas/product.schema';
+import { ProductModule } from '../product/product.module';
 
 @Module({
   imports: [
     AuthModule,
-    // ProductModule,
+    ProductModule,
     MongooseModule.forFeature([
       { name: 'StaredProduct', schema: StaredProductSchema },
       { name: 'Product', schema: ProductSchema }
